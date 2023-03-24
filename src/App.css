@@ -1,10 +1,215 @@
-.App {
-  text-align: center;
+body{
+  font-family: "Segoe UI", Arial, sans-serif;
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#post-input{
+  /* max-width:490px; */
+  background: #fff;
+  border-radius:3px;
+}
+
+.user-info-post{
+display:inline-block;
+margin-left: 80px;
+
+}
+
+/* 
+#post-output-text{
+width: 308px;
+height: 22px;
+font-size: 20px; */
+
+/* Segoe UI / Regular / 17 */
+
+/* font-family: 'Segoe UI';
+font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 22px;
+/* identical to box height, or 126% */
+/* 
+display: flex;
+align-items: flex-end;
+
+/* Typography / Black */
+
+
+
+/* #post-header{
+  display: flex;
+  align-items:flex-start;
+  font-size:14px;
+} */
+
+#user-img {
+  border-radius:100px;
+  width: 56px;
+  height: 56px;
+  display:inline-block;
+  margin-right:20px;
+}
+
+#post-button{
+  position: absolute;
+width: 74px;
+height: 37px;
+background: #4998ED;
+border-radius: 18.5px;
+color: white
+}
+
+#Devil{
+  width: 56px;
+  height: 56px;
+  position: absolute;
+}
+
+#Alice{
+  width: 56px;
+  height: 56px;
+  position: absolute;
+}
+
+#Bill{
+  width: 56px;
+  height: 56px;
+  position: absolute;
+}
+
+#Angel{
+  width: 56px;
+  height: 56px;
+  position: absolute;
+}
+
+.post-text {
+  font-size:20px;
+}
+
+.comment-text{
+  font-size:20px;
+}
+#post-input-text{
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+#post-text span {
+  color:#657786;
+  font-weight:normal;
+}
+
+#post-output{
+  max-width:490px;
+  background: #fff;
+  border-radius:3px;
+}
+
+#post-output-text{
+  font-weight:normal;
+  /* max-width: 10px; */
+  font-size:20px;
+  /* width:100%; */
+}
+
+.user-name{
+height: 22px;
+
+/* Segoe UI / Bold / 17 */
+
+font-family: 'Segoe UI';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 22px;
+/* identical to box height, or 126% */
+
+display: flex;
+align-items: flex-end;
+
+/* Typography / Black */
+
+color: #000000;
+
+
+/* Inside auto layout */
+
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+.user-tag{
+  width: 76px;
+height: 22px;
+
+/* Segoe UI / Regular / 17 */
+
+font-family: 'Segoe UI';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 22px;
+/* identical to box height, or 126% */
+
+display: flex;
+align-items: flex-end;
+
+/* Typography/Secondary */
+
+color: #56636F;
+
+
+/* Inside auto layout */
+
+flex: none;
+order: 1;
+flex-grow: 0;
+}
+
+.date{
+/* width: 248px;
+height: 22px;
+left: 1137px;
+top: 494px; */
+
+font-family: 'Segoe UI';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+/* line-height: 22px; */
+/* identical to box height, or 50% */
+
+display: flex;
+align-items: flex-end;
+
+color: #56636F;
+
+}
+
+#post-input-text{
+width: 400px;
+height: 70px;
+
+/* Segoe UI / Regular / 17 */
+
+font-family: 'Segoe UI';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 22px;
+/* identical to box height, or 126% */
+
+display: flex;
+align-items: flex-end;
+
+/* Typography / Black */
+
+color: #000000;
+
 }
 
 @media (prefers-reduced-motion: no-preference) {
