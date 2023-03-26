@@ -9,7 +9,7 @@ function App() {
   const [data, setData] = useState({ userInput: "", postInput: "" });
   const [showResults, setShowResults] = React.useState(false);
   const [showProgress, setShowProgress] = React.useState(false);
-  const [response, setResponse] = useState("");
+  const [response, setResponse] = useState();
 
 
   //When the user press "enter" or on search button
@@ -60,7 +60,8 @@ function App() {
       .catch(error => {
         console.log(error);
       });
-    response !== "" && setShowResults(true);
+    // response !== "" && setShowResults(true);
+    setShowResults(true);
     setShowProgress(false);
   }
 
@@ -75,25 +76,25 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <div>
-          <form onSubmit={handleSumbit}>
-            <div>
-              <input
-                placeholder="Paste here the post suspected of being false about the Holocaust"
-                onChange={(e) => handle(e)}
-                type="text"
-                id="userInput"
-                className="App-input"
-                autoComplete="off"
-              />
-            </div>
-            <button>Get a response</button>
-          </form>
-        </div>
-        {showProgress ? <CircularProgress padding-top="18px" /> : null}
-        {showResults ? <Results response={response} /> : null}
-      </header>
+      {/* <header className="App-header"> */}
+      <div>
+        <form onSubmit={handleSumbit}>
+          <div>
+            <input
+              placeholder="Paste here the post suspected of being false about the Holocaust"
+              onChange={(e) => handle(e)}
+              type="text"
+              id="userInput"
+              className="App-input"
+              autoComplete="off"
+            />
+          </div>
+          <button>Get a response</button>
+        </form>
+      </div>
+      {showProgress ? <CircularProgress padding-top="18px" /> : null}
+      {showResults ? <Results response={response} /> : null}
+      {/* </header> */}
     </div>
   );
 }
