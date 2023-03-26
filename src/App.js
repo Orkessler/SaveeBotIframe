@@ -1,52 +1,40 @@
-import './App.css';
-import React, { useState } from "react";
 import Axios from "axios";
-import Alice from './Alice.jpg';
-import Bill from './Bill.jpg';
-import Devil from './devil.png';
-import Angel from './angel.png';
-
-
+import "./App.css";
+import React, { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+//import Button from '@mui/material/Button';                //    I decided to remove this button
 
 function App() {
-
-  const [postInput, setPostInput] = useState("");
-  const [comments, setComments] = useState([]);
-  const [commentInput, setCommentInput] = useState("");
-  const [isbot, setIsbot] = useState(false);
-  const apiUrl = 'https://api.feedox.com/v1/ai/conversation';
-
-  const [data, setData] = useState({ userInput: "", theAns: "" });
+  const apiUrl = 'https://api.feedox.com/v1/ai/conversation/5579120785547-8400';
+  const [data, setData] = useState({ userInput: "", postInput: "" });
+  const [showResults, setShowResults] = React.useState(false);
+  const [showProgress, setShowProgress] = React.useState(false);
+  const [response, setResponse] = useState("");
 
 
-  const handlePostSubmit = (event) => {
-    event.preventDefault();
-    document.getElementById("post-input-text").style.display = "none";
-    document.getElementById("post-button").style.display = "none";
-    document.getElementById("post-output").style.display = "block";
-    document.getElementById("dummy-comments").style.display = "block";
-    console.log("postInput: " + postInput)
-    event.preventDefault();
+  //When the user press "enter" or on search button
+  const handleSumbit = (e) => {
+    // setData((data.postInput = "")); //first the post input is empty even ater some requests
+    setShowResults(false); //first there are no results even ater some requests
+    setData((data.postInput = data.userInput));
+    setShowProgress(true);
     getResponse();
+    e.preventDefault();
+    console.log(data.postInput);
   };
 
-  const handleCommentSubmit = (event) => {
-    event.preventDefault();
-    setComments([comments, commentInput]);
-    setCommentInput("");
-    console.log("replay: " + commentInput)
-    if (commentInput === "@savee") {
-      setIsbot(true);
-    }
-
-    event.preventDefault();
-
-
+  //Get the typing from the user
+  const handle = (e) => {
+    const newData = { ...data };
+    newData[e.target.id] = e.target.value;
+    setData(newData);
   };
 
-  const config = {
+
+  let config = {
     headers: {
       'accept': '*/*',
+      'accept-language': 'en-GB,en;q=0.9,en-US;q=0.8,he;q=0.7,es;q=0.6',
       'content-type': 'application/json; charset=UTF-8'
     }
   };
@@ -55,114 +43,59 @@ function App() {
     "messages": [
       {
         "role": "user",
-        "content": "input: \"" + postInput + "\""
+        "content": "input: \"" + data.userInput + "\""
       }
     ],
-    "config": {
-      "frequency_penalty": 0,
-      "presence_penalty": 0,
-      "temperature": 0,
-      "user": "HWYnPaVfS3aoTLVlVxmAD4ISgwi2",
-      "model": "gpt-4-0314"
-    },
-    "prompt": "You are a fact-checking AI assistant aimed to fight fake and misinformation content. You'll get posts from social media and you'll analyze the facts and try to explain what is incorrect and what is correct. You'll be truthful and factual as possible and attempt to convince the user. Keep it short and concise. Your focus is on statements about the holocaust.",
-    "userId": "HWYnPaVfS3aoTLVlVxmAD4ISgwi2",
-    "docs": []
+    "userId": "HWYnPaVfS3aoTLVlVxmAD4ISgwi2"
   };
 
   async function getResponse() {
     await Axios.post(apiUrl, requestData, config)
-      .then(response => {
-        console.log("your response is:" + response.data[0].content);
-        setData({ theAns: response.data[0].content });
+      .then(res => {
+        console.log(requestData);
+        console.log("your post is:" + data.postInput);
+        console.log("your response is:" + res.data[0].content);
+        setResponse(res.data[0].content);
       })
       .catch(error => {
         console.log(error);
       });
+    response !== "" && setShowResults(true);
+    setShowProgress(false);
   }
-  const Botcomment = ({ data }) => {
-    console.log("data: " + data)
 
+  //The Result components. It only appears when there are results for the search
+  const Results = ({ response }) => {
     return (
-      <div className="comment-text">
-        <img id="Angel" src={Angel} alt=""></img>
-        <div className="user-info-post" >
-          <span className="user-name">savee</span>
-          <span className="user-tag">@savee</span>
-          <span className="date">March 17</span>
-        </div>
-        <p className="dummy-comment">{data}</p>
-
+      <div className="Results">
+        <p>{response}</p>
       </div>
     );
-  }
-
+  };
 
   return (
-
-    //get input from user and print it as h1. when the user clicks on the button, the input is cleared and the answer is shown
     <div className="App">
-      <form onSubmit={handlePostSubmit}>
-        <div id="post-input">
-          <div className="post-text">
-            <img id="Devil" src={Devil} alt="Devil"></img>
-            <div className="user-info-post" >
-              <span className="user-name">Jews Hater</span>
-              <span className="user-tag">@JewsHater</span>
-              <span className="date">March 15</span>
+      <header className="App-header">
+        <div>
+          <form onSubmit={handleSumbit}>
+            <div>
+              <input
+                placeholder="Paste here the post suspected of being false about the Holocaust"
+                onChange={(e) => handle(e)}
+                type="text"
+                id="userInput"
+                className="App-input"
+                autoComplete="off"
+              />
             </div>
-            <textarea id="post-input-text" rows="45" cols="80" placeholder="What Do you want to share today?" value={postInput} onChange={(event) => setPostInput(event.target.value)}></textarea>
-
-            <button id="post-button" type="submit">Fake</button>
-          </div>
+            <button>Get a response</button>
+          </form>
         </div>
-      </form >
-      <div id="post-output" style={{ display: "none" }}>
-        <p id="post-output-text">{postInput}</p>
-      </div>
-      <div id="dummy-comments" style={{ display: "none" }}>
-        <div className="comment-text" >
-          <img id="Alice" src={Alice} ></img>
-          <div className="user-info-post" >
-            <span className="user-name">Alice Gordon</span>
-            <span className="user-tag">@Alicia754</span>
-            <span className="date">March 16</span>
-          </div>
-          <p className="dummy-comment">OMG!! I didn't know that!</p>
-
-          <div className="comment-text">
-            <img id="Bill" src={Bill}></img>
-            <div className="user-info-post" >
-              <span className="user-name">Bill Smith</span>
-              <span className="user-tag">@BillSmith11!</span>
-              <span className="date">March 16</span>
-            </div>
-            <p className="dummy-comment">Is it for real??</p>
-
-          </div>
-        </div>
-
-        <div>{isbot ?
-          <div className="comment-text">
-            <img id="Angel" src={Angel} alt=""></img>
-            <div className="user-info-post" >
-              <span className="user-name">savee</span>
-              <span className="user-tag">@savee</span>
-              <span className="date">March 17</span>
-            </div>
-            <p className="bot-comment">{data.theAns}</p>
-
-          </div> : null}</div>
-        <form onSubmit={handleCommentSubmit}>
-          <input type="text" id="comment-input-text" value={commentInput} onChange={(event) => setCommentInput(event.target.value)} />
-          <button id="comment-button" type="submit" name="button">reply</button>
-        </form>
-
-      </div>
+        {showProgress ? <CircularProgress padding-top="18px" /> : null}
+        {showResults ? <Results response={response} /> : null}
+      </header>
     </div>
   );
 }
-
-
 
 export default App;
